@@ -1,8 +1,46 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import time
 import Adafruit_ADS1x15
 import smbus
+import board
+import busio
+import digitalio
+from adafruit_mcp230xx.mcp23008 import MCP23008
+
+def mcp23008(pin_num,direction,value,bus_num):
+    
+    # Initialize the I2C bus:
+    i2c = busio.I2C(board.SCL, board.SDA)
+
+    mcp = MCP23008(i2c, address=bus_num)
+
+    # Setup del pin 0 de power a los sensores
+    pin = mcp.get_pin(pin_num)
+
+    if direction == "OUT":
+        # Setup pin as an output that's at a high logic level.
+        #pin.switch_to_output(value=False)
+        pin.direction=digitalio.Direction.OUTPUT
+        time.sleep(0.1)
+        pin.value=value
+        return 0
+
+    elif direction == "IN":
+        
+        # Setup pin as an input with a pull-up resistor enabled.  Notice you can also
+        # use properties to change this state.
+        pin.direction = digitalio.Direction.INPUT
+        pin.pull = digitalio.Pull.UP
+        time.sleep(0.1)
+        return pin.value
+
+    else:
+
+        return 1
+
+
+
 
 def sht31(var,bus_num):
     
@@ -49,7 +87,7 @@ def ads1115_4ch(address_num,bus_num):
     while True:
         values = [0]*4
         for i in range(4):
-            values[i] = adc.read_adc(i, gain=GAIN)
+            values[i] = 6.144*adc.read_adc(i, gain=GAIN)/32765
         return values
 
 def main():

@@ -18,7 +18,7 @@ def create_csv(csv_data):
     now = datetime.now()
     dt_string = now.strftime("%d%m%Y_%H%M%S")
     file_name = "mediciones_" + str(dt_string) + ".csv"
-    path = "/home/pi/scripts/Data_files/" + str(file_name)
+    path = "/home/pi/Enose/Data_files/" + str(file_name)
     f = open(path, "w")
 
     f.write(",,48,48,48,48,49,49,49,49,4B,4B,4B,4B")
@@ -37,11 +37,13 @@ def create_csv(csv_data):
 
         for data in file_data:
 
-            chain += str(data) + ","
             n += 1
             if n == size:
+                chain += str(data)
                 f.write(chain)
                 f.write("\n")
+            else:
+                chain += str(data) + ","
 
     return 0
 
@@ -52,28 +54,49 @@ def mediciones():
     muestras = 0
     minuto_inicio = tiempo.minute
     csv_data = []
+    num_muestras=50
 
-    while tiempo.minute - minuto_inicio < 1:
+    i2c_sensor.mcp23008(0,"OUT",True,0x23)
+
+    while True:
+
+        temperature = i2c_sensor.sht31("temp",1)
+        time.sleep(3)
+    
+        if temperature > 35:
+    
+            print("Temperatura alcanzada, tomando mediciones")
+            print("-----------------------------------------")
+    
+            while muestras < num_muestras:
+                
+                T=[]
+                H=[]
+                adc0=[]
+                adc1=[]
+                adc2=[]
         
-        T=[]
-        H=[]
-        adc0=[]
-        adc1=[]
-        adc2=[]
-
-        print("Muestra: " + str(muestras + 1) + " por 1 minutos")
-
-        T.append(i2c_sensor.sht31("temp",1))
-        H.append(i2c_sensor.sht31("hum",1))
-        adc0 = i2c_sensor.ads1115_4ch(0x48, 1)
-        adc1 = i2c_sensor.ads1115_4ch(0x49, 1)
-        adc2 = i2c_sensor.ads1115_4ch(0x4B, 1)
-        tiempo = datetime.now()
-        csv_data.append(T + H + adc0 + adc1 + adc2)
-        muestras += 1
-
-    create_csv(csv_data)
-    upload_data()
+                print("Muestra: " + str(muestras + 1) + " de " + str(num_muestras))
+        
+                T.append(i2c_sensor.sht31("temp",1))
+                H.append(i2c_sensor.sht31("hum",1))
+                adc0 = i2c_sensor.ads1115_4ch(0x48, 1)
+                adc1 = i2c_sensor.ads1115_4ch(0x49, 1)
+                adc2 = i2c_sensor.ads1115_4ch(0x4B, 1)
+                tiempo = datetime.now()
+                csv_data.append(T + H + adc0 + adc1 + adc2)
+                muestras += 1
+        
+            
+            i2c_sensor.mcp23008(0,"OUT",False,0x23)
+            create_csv(csv_data)
+            upload_data()
+            break
+    
+        else:
+            print("Dispositivo en calentamiento de sensores (39C)")
+            print("Temperatura actual: "+ str(temperature) + " C")
+            print("------------------------------------------------")
 
 
 def main():
