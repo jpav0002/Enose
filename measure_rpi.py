@@ -3,14 +3,15 @@
 import serial
 import time
 import i2c_sensor
+import subprocess
 from apscheduler.schedulers.blocking import BlockingScheduler
 from datetime import datetime
-from subprocess import Popen
 
 def upload_data():
     now = datetime.now()
     dt_string = now.strftime("%d%m%Y_%H%M%S")
-    Popen('./gitpush.sh %s' % (str(dt_string),), shell=True)
+    process= subprocess.Popen('./gitpush.sh %s' % (str(dt_string),), shell=True)
+    process.wait()
     return 0
 
 
@@ -55,6 +56,7 @@ def mediciones():
     minuto_inicio = tiempo.minute
     csv_data = []
     num_muestras=50
+    temp_obj=35
 
     i2c_sensor.mcp23008(0,"OUT",True,0x23)
 
@@ -63,7 +65,7 @@ def mediciones():
         temperature = i2c_sensor.sht31("temp",1)
         time.sleep(3)
     
-        if temperature > 35:
+        if temperature > temp_obj:
     
             print("Temperatura alcanzada, tomando mediciones")
             print("-----------------------------------------")
@@ -94,7 +96,7 @@ def mediciones():
             break
     
         else:
-            print("Dispositivo en calentamiento de sensores (39C)")
+            print("Dispositivo en calentamiento de sensores. "+"Temperatura objetivo: " + str(temp_obj))
             print("Temperatura actual: "+ str(temperature) + " C")
             print("------------------------------------------------")
 
