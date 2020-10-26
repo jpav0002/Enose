@@ -85,7 +85,7 @@ def mediciones():
     muestras = 0
     csv_data = []
     num_muestras=50
-    temp_obj=32
+    temp_obj=22
 
     i2c_sensor.mcp23008(0, "OUT", True, 0x23)
 
@@ -118,7 +118,7 @@ def mediciones():
             i2c_sensor.mcp23008(0, "OUT", False, 0x23)
             avr_list = create_csv(csv_data)
             update_mean(avr_list)
-            upload_data()
+            #upload_data()
             break
 
         else:
