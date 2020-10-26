@@ -56,7 +56,7 @@ def mediciones():
     minuto_inicio = tiempo.minute
     csv_data = []
     num_muestras=50
-    temp_obj=35
+    temp_obj=32
 
     i2c_sensor.mcp23008(0,"OUT",True,0x23)
 

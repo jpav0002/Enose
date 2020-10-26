@@ -49,7 +49,7 @@ pin0.direction=digitalio.Direction.OUTPUT
 while True:
     # Blink pin 0 on and then off.
     pin0.value = True
-    time.sleep(5)
+    time.sleep(30)
     # Read pin 1 and print its state.
     print("Pin 1 is at a high level: {0}".format(pin0.value))
     pin0.value = False
