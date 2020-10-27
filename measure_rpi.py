@@ -11,7 +11,7 @@ from datetime import datetime
 def upload_data():
     now = datetime.now()
     dt_string = now.strftime("%d%m%Y_%H%M%S")
-    process = subprocess.Popen('./gitpush.sh %s' % (str(dt_string),), shell=True)
+    process = subprocess.Popen('/home/pi/Enose/gitpush.sh %s' % (str(dt_string),), shell=True)
     process.wait()
     return 0
 
@@ -71,7 +71,7 @@ def update_mean(mean_list):
             chain += str(data) + ","
 
     now = datetime.now()
-    chain = now.strftime("%d%m%Y,%H%M%S") + "," + chain
+    chain = now.strftime("%d/%m/%Y,%H:%M:%S") + "," + chain
     path = "/home/pi/Enose/Data_files/Mean_Data.csv"
     f = open(path, "a")
     f.write(chain)
@@ -84,7 +84,7 @@ def update_mean(mean_list):
 def mediciones():
     muestras = 0
     csv_data = []
-    num_muestras=50
+    num_muestras=30
     temp_obj=30
 
     i2c_sensor.mcp23008(0, "OUT", True, 0x23)
@@ -128,12 +128,11 @@ def mediciones():
 
 
 def main():
-    #    sched = BlockingScheduler()
+    
+    sched = BlockingScheduler()
 
-    #    sched.add_job(mediciones, 'cron', day_of_week='mon-sun', hour='9,13,17,21')
-    #    sched.add_job(mediciones, 'cron', day_of_week='mon-sun', hour='18', minute='00,02')
-    #    sched.start()
-    mediciones()
+    sched.add_job(mediciones, 'cron', day_of_week='mon-sun', hour='0-23', minute="0,15,30,45")
+    sched.start()
 
 
 if __name__ == "__main__":

@@ -46,11 +46,13 @@ pin0.direction=digitalio.Direction.OUTPUT
 #pin1.pull = digitalio.Pull.UP
 
 # Now loop blinking the pin 0 output and reading the state of pin 1 input.
-while True:
+n=0
+while n<5:
     # Blink pin 0 on and then off.
     pin0.value = True
-    time.sleep(30)
+    time.sleep(2.5)
     # Read pin 1 and print its state.
     print("Pin 1 is at a high level: {0}".format(pin0.value))
     pin0.value = False
-    break
+    time.sleep(2.5)
+    n+=1
