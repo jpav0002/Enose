@@ -27,8 +27,7 @@ def create_csv(csv_data):
     f.write("\n")
     f.write(",,0,1,2,3,0,1,2,3,0,1,2,3")
     f.write("\n")
-    f.write(
-        "Temperatura,Humedad,SP3S-AQ2-01,TGS832-A00,TGS822,4 ó 1,NA,SK25F,NA,SB-51-00,4 ó 1,SP-31-00,TGS2602-B00,TGS2620-C00")
+    f.write("Temperatura,Humedad,SP3S-AQ2-01,TGS832-A00,TGS822,4 ó 1,NA,SK25F,NA,SB-51-00,4 ó 1,SP-31-00,TGS2602-B00,TGS2620-C00")
     f.write("\n")
 
     mean_div = len(csv_data)
@@ -82,19 +81,28 @@ def update_mean(mean_list):
 
 
 def mediciones():
+    now = datetime.now()
     muestras = 0
     csv_data = []
     num_muestras=30
-    temp_obj=30
+    temp_obj=32
+    wait_time=14
+
+    print("Iniciando Calentamiento")
 
     i2c_sensor.mcp23008(0, "OUT", True, 0x23)
+    time.sleep(120)
+
+    minute_start = now.minute
 
     while True:
 
-        temperature = i2c_sensor.sht31("temp", 1)
-        time.sleep(3)
+        now=datetime.now()
 
-        if temperature > temp_obj:
+        temperature = i2c_sensor.sht31("temp", 1)
+        time.sleep(1)
+
+        if (temperature > temp_obj) or (now.minute-minute_start > wait_time):
 
             print("Temperatura alcanzada, tomando mediciones")
             print("-----------------------------------------")
@@ -118,7 +126,7 @@ def mediciones():
             i2c_sensor.mcp23008(0, "OUT", False, 0x23)
             avr_list = create_csv(csv_data)
             update_mean(avr_list)
-            upload_data()
+            #upload_data()
             break
 
         else:
@@ -131,7 +139,7 @@ def main():
     
     sched = BlockingScheduler()
 
-    sched.add_job(mediciones, 'cron', day_of_week='mon-sun', hour='0-23', minute="0,15,30,45")
+    sched.add_job(mediciones, 'cron', day_of_week='mon-sun', hour='0-23', minute="0,20,40")
     sched.start()
 
 
