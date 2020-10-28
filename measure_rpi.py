@@ -86,14 +86,12 @@ def mediciones():
     csv_data = []
     num_muestras=30
     temp_obj=32
-    wait_time=14
+    wait_time=16
 
     print("Iniciando Calentamiento")
 
     i2c_sensor.mcp23008(0, "OUT", True, 0x23)
-    time.sleep(120)
-
-    minute_start = now.minute
+    time.sleep(300)
 
     minute_start = now.minute
 
