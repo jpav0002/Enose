@@ -95,6 +95,8 @@ def mediciones():
 
     minute_start = now.minute
 
+    minute_start = now.minute
+
     while True:
 
         now=datetime.now()
