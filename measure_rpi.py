@@ -84,14 +84,14 @@ def mediciones():
     now = datetime.now()
     muestras = 0
     csv_data = []
-    num_muestras=3
-    temp_obj=20
+    num_muestras=30
+    temp_obj=32
     wait_time=16
 
     print("Iniciando Calentamiento")
 
     i2c_sensor.mcp23008(0, "OUT", True, 0x23)
-    #time.sleep(300)
+    time.sleep(300)
 
     minute_start = now.minute
 
@@ -127,6 +127,7 @@ def mediciones():
             avr_list = create_csv(csv_data)
             update_mean(avr_list)
             upload_data()
+            print("Finalizo toma de datos correctamente")
             break
 
         else:
@@ -137,13 +138,10 @@ def mediciones():
 
 def main():
     
-    #sched = BlockingScheduler()
+    sched = BlockingScheduler()
 
-    #sched.add_job(mediciones, 'cron', day_of_week='mon-sun', hour='0-23', minute="0,20,40")
-    #sched.start()
-    while True:
-        mediciones()
-
+    sched.add_job(mediciones, 'cron', day_of_week='mon-sun', hour='0-23', minute="0,20,40")
+    sched.start()
 
 if __name__ == "__main__":
     main()
