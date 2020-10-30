@@ -11,7 +11,7 @@ from datetime import datetime
 def upload_data():
     now = datetime.now()
     dt_string = now.strftime("%d%m%Y_%H%M%S")
-    process = subprocess.Popen('/home/pi/Enose/gitpush.sh %s' % (str(dt_string),), shell=True)
+    process = subprocess.Popen('/home/pi/repo/Enose/gitpush.sh %s' % (str(dt_string),), shell=True)
     process.wait()
     return 0
 
@@ -20,7 +20,7 @@ def create_csv(csv_data):
     now = datetime.now()
     dt_string = now.strftime("%d%m%Y_%H%M%S")
     file_name = "mediciones_" + str(dt_string) + ".csv"
-    path = "/home/pi/Enose/Data_files/" + str(file_name)
+    path = "/home/pi/repo/Enose/Data_files/" + str(file_name)
     f = open(path, "w")
 
     f.write(",,48,48,48,48,49,49,49,49,4B,4B,4B,4B")
@@ -71,7 +71,7 @@ def update_mean(mean_list):
 
     now = datetime.now()
     chain = now.strftime("%d/%m/%Y,%H:%M:%S") + "," + chain
-    path = "/home/pi/Enose/Data_files/Mean_Data.csv"
+    path = "/home/pi/repo/Enose/Data_files/Mean_Data.csv"
     f = open(path, "a")
     f.write(chain)
     f.write("\n")
