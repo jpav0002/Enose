@@ -18,17 +18,17 @@ def upload_data():
 
 def create_csv(csv_data):
     now = datetime.now()
-    dt_string = now.strftime("%d%m%Y_%H%M%S")
-    file_name = "mediciones_" + str(dt_string) + ".csv"
-    path = "/home/pi/repo/Enose/Data_files/" + str(file_name)
-    f = open(path, "w")
-
-    f.write(",,48,48,48,48,49,49,49,49,4B,4B,4B,4B")
-    f.write("\n")
-    f.write(",,0,1,2,3,0,1,2,3,0,1,2,3")
-    f.write("\n")
-    f.write("Temperatura,Humedad,SP3S-AQ2-01,TGS832-A00,TGS822,4 ó 1,NA,SK25F,NA,SB-51-00,4 ó 1,SP-31-00,TGS2602-B00,TGS2620-C00")
-    f.write("\n")
+#    dt_string = now.strftime("%d%m%Y_%H%M%S")
+#    file_name = "mediciones_" + str(dt_string) + ".csv"
+#    path = "/home/pi/repo/Enose/Data_files/" + str(file_name)
+#    f = open(path, "w")
+#
+#    f.write(",,48,48,48,48,49,49,49,49,4B,4B,4B,4B")
+#    f.write("\n")
+#    f.write(",,0,1,2,3,0,1,2,3,0,1,2,3")
+#    f.write("\n")
+#    f.write("Temperatura,Humedad,SP3S-AQ2-01,TGS832-A00,TGS822,4 ó 1,NA,SK25F,NA,SB-51-00,4 ó 1,SP-31-00,TGS2602-B00,TGS2620-C00")
+#    f.write("\n")
 
     mean_div = len(csv_data)
     new_arr = [0] * len(csv_data[0])
@@ -45,14 +45,14 @@ def create_csv(csv_data):
             n += 1
             if n == size:
                 chain += str(data)
-                f.write(chain)
-                f.write("\n")
+#                f.write(chain)
+#                f.write("\n")
             else:
                 chain += str(data) + ","
 
     average = [x / mean_div for x in new_arr]
 
-    f.close()
+#    f.close()
     return average
 
 
@@ -104,7 +104,7 @@ def mediciones():
 
         if (temperature > temp_obj) or (now.minute-minute_start > wait_time):
 
-            print("Temperatura alcanzada, tomando mediciones")
+            print("Temperatura alcanzada, tomando medicionesi a: "+str(temperature)+"C")
             print("-----------------------------------------")
 
             while muestras < num_muestras:
