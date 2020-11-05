@@ -17,9 +17,10 @@ def upload_data():
 
 
 def create_csv(csv_data):
+
     now = datetime.now()
     date = now.strftime("%d%m%Y")
-    hour = now.strftime("%H%M&S")
+    hour = now.strftime("%H%M%S")
     file_name = "mediciones_" + str(date) + ".csv"
     path = "/home/pi/repo/Enose/Data_files/" + str(file_name)
 
@@ -30,6 +31,7 @@ def create_csv(csv_data):
     else:
 
         f = open(path, "w")
+        date = now.strftime("%d/%m/%Y")
         f.write(date+","+hour+",Temperature,Humidity,SP3S-AQ2-01,TGS832-A00,TGS822,SP-11-00,NA,SK25F,NA,SB-51-00,SP-19-01,SP-31-00,TGS2602-B00,TGS2620-C00")
         f.write("\n")
 
@@ -46,14 +48,10 @@ def create_csv(csv_data):
 
             new_arr[n] += data
             n += 1
-            if n == size:
-                chain += str(data)
-            else:
-                chain += str(data) + ","
 
     average = [x / mean_div for x in new_arr]
 
-    size = len(mean_list)
+    size = len(average)
     n = 0
     chain = ""
 
