@@ -18,8 +18,9 @@ def upload_data():
 
 def create_csv(csv_data):
     now = datetime.now()
-    dt_string = now.strftime("%d%m%Y")
-    file_name = "mediciones_" + str(dt_string) + ".csv"
+    date = now.strftime("%d%m%Y")
+    hour = now.strftime("%H%M&S")
+    file_name = "mediciones_" + str(date) + ".csv"
     path = "/home/pi/repo/Enose/Data_files/" + str(file_name)
 
     if os.path.isfile(path):
@@ -29,12 +30,12 @@ def create_csv(csv_data):
     else:
 
         f = open(path, "w")
-        f.write("Temperature,Humidity,SP3S-AQ2-01,TGS832-A00,TGS822,SP-11-00,NA,SK25F,NA,SB-51-00,SP-19-01,SP-31-00,TGS2602-B00,TGS2620-C00")
+        f.write(date+","+hour+",Temperature,Humidity,SP3S-AQ2-01,TGS832-A00,TGS822,SP-11-00,NA,SK25F,NA,SB-51-00,SP-19-01,SP-31-00,TGS2602-B00,TGS2620-C00")
         f.write("\n")
 
     mean_div = len(csv_data)
     new_arr = [0] * len(csv_data[0])
-    chain = ""
+
     for file_data in csv_data:
 
         n = 0
@@ -51,19 +52,12 @@ def create_csv(csv_data):
                 chain += str(data) + ","
 
     average = [x / mean_div for x in new_arr]
-    chain = now.strftime("%d/%m/%Y,%H:%M:%S") + "," + chain
-    f.write(chain)
-    f.write("\n")
-    f.close()
-    return average
-
-
-def update_mean(mean_list):
 
     size = len(mean_list)
     n = 0
     chain = ""
-    for data in mean_list:
+
+    for data in average:
 
         n += 1
         if n == size:
@@ -71,8 +65,15 @@ def update_mean(mean_list):
         else:
             chain += str(data) + ","
 
-    now = datetime.now()
     chain = now.strftime("%d/%m/%Y,%H:%M:%S") + "," + chain
+    f.write(chain)
+    f.write("\n")
+    f.close()
+    return chain
+
+
+def update_mean(chain):
+
     path = "/home/pi/repo/Enose/Data_files/Mean_Data.csv"
     f = open(path, "a")
     f.write(chain)
