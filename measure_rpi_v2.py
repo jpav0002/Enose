@@ -32,7 +32,7 @@ def create_csv(csv_data):
 
         f = open(path, "w")
         date = now.strftime("%d/%m/%Y")
-        f.write(date+","+hour+",Temperature,Humidity,SP3S-AQ2-01,TGS832-A00,TGS822,SP-11-00,NA,SK25F,NA,SB-51-00,SP-19-01,SP-31-00,TGS2602-B00,TGS2620-C00")
+        f.write("Date,Time,Temperature,Humidity,SP3S-AQ2-01,TGS832-A00,TGS822,SP-11-00,NA,SK25F,NA,SB-51-00,SP-19-01,SP-31-00,TGS2602-B00,TGS2620-C00")
         f.write("\n")
 
     mean_div = len(csv_data)
