@@ -21,8 +21,8 @@ def create_csv(csv_data):
     now = datetime.now()
     date = now.strftime("%d%m%Y")
     hour = now.strftime("%H%M%S")
-    file_name = "mediciones_" + str(date) + ".csv"
-    path = "/home/pi/repo/Enose/Data_files/" + str(file_name)
+    file_name = "mediciones_regresion_" + str(date) + ".csv"
+    path = "/home/pi/repo/Enose/regresion/" + str(file_name)
 
     if os.path.isfile(path):
 
@@ -103,7 +103,7 @@ def mediciones():
         temperature = i2c_sensor.sht31("temp", 1)
         time.sleep(1)
 
-        if (temperature > temp_obj) or (now.minute-minute_start > wait_time):
+        if (now.minute-minute_start > wait_time):
 
             print("Temperature reached, taking measures: "+str(temperature)+"C")
             print("-----------------------------------------")
@@ -126,7 +126,7 @@ def mediciones():
 
             i2c_sensor.mcp23008(0, "OUT", False, 0x23)
             avr_list = create_csv(csv_data)
-            update_mean(avr_list)
+            #update_mean(avr_list)
             upload_data()
             print("Data recollection ended successfully")
             break
