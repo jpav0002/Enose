@@ -21,8 +21,8 @@ def create_csv(csv_data):
     now = datetime.now()
     date = now.strftime("%d%m%Y")
     hour = now.strftime("%H%M%S")
-    file_name = "mediciones_regresion_" + str(date) + ".csv"
-    path = "/home/pi/repo/Enose/regresion/" + str(file_name)
+    file_name = "mediciones_smartiago_" + str(date) + ".csv"
+    path = "/home/pi/repo/Enose/smartiago/" + str(file_name)
 
     if os.path.isfile(path):
 
@@ -72,7 +72,7 @@ def create_csv(csv_data):
 
 def update_mean(chain):
 
-    path = "/home/pi/repo/Enose/Data_files/Mean_Data.csv"
+    path = "/home/pi/repo/Enose/smartiago/Mean_Data.csv"
     f = open(path, "a")
     f.write(chain)
     f.write("\n")
@@ -83,16 +83,16 @@ def update_mean(chain):
 
 def mediciones():
     now = datetime.now()
-    muestras = 0
+    muestras = 10
     csv_data = []
     num_muestras = 30
-    temp_obj = 32
-    wait_time = 16
+    temp_obj = 20
+    wait_time = 15
 
     print("Starting Heating")
 
     i2c_sensor.mcp23008(0, "OUT", True, 0x23)
-    time.sleep(300)
+    time.sleep(30)
 
     minute_start = now.minute
 
@@ -103,7 +103,7 @@ def mediciones():
         temperature = i2c_sensor.sht31("temp", 1)
         time.sleep(1)
 
-        if (now.minute-minute_start > wait_time):
+        if (temperature>temp_obj or now.minute-minute_start > wait_time):
 
             print("Temperature reached, taking measures: "+str(temperature)+"C")
             print("-----------------------------------------")
@@ -126,7 +126,7 @@ def mediciones():
 
             i2c_sensor.mcp23008(0, "OUT", False, 0x23)
             avr_list = create_csv(csv_data)
-            #update_mean(avr_list)
+            update_mean(avr_list)
             upload_data()
             print("Data recollection ended successfully")
             break
@@ -139,10 +139,11 @@ def mediciones():
 
 def main():
     
-    sched = BlockingScheduler()
+    #sched = BlockingScheduler()
 
-    sched.add_job(mediciones, 'cron', day_of_week='mon-sun', hour='0-23', minute="0,20,40")
-    sched.start()
+    #sched.add_job(mediciones, 'cron', day_of_week='mon-sun', hour='0-23', minute="0,15,30,45")
+    #sched.start()
+    mediciones()
 
 
 if __name__ == "__main__":
