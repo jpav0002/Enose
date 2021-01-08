@@ -86,13 +86,13 @@ def mediciones():
     muestras = 0
     csv_data = []
     num_muestras = 30
-    temp_obj = 15
+    temp_obj = 25
     wait_time = 15
 
     print("Starting Heating")
 
     i2c_sensor.mcp23008(0, "OUT", True, 0x23)
-    time.sleep(30)
+    time.sleep(300)
 
     minute_start = now.minute
 
@@ -139,11 +139,11 @@ def mediciones():
 
 def main():
     
-#    sched = BlockingScheduler()
+    sched = BlockingScheduler()
 
-#    sched.add_job(mediciones, 'cron', day_of_week='mon-sun', hour='0-23', minute="0,15,30,45")
-#    sched.start()
-    mediciones()
+    sched.add_job(mediciones, 'cron', day_of_week='mon-sun', hour='0-23', minute="0,20,40")
+    sched.start()
+#    mediciones()
 
 
 if __name__ == "__main__":
