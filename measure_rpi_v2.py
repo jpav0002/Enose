@@ -83,10 +83,10 @@ def update_mean(chain):
 
 def mediciones():
     now = datetime.now()
-    muestras = 10
+    muestras = 0
     csv_data = []
     num_muestras = 30
-    temp_obj = 20
+    temp_obj = 15
     wait_time = 15
 
     print("Starting Heating")
@@ -139,10 +139,10 @@ def mediciones():
 
 def main():
     
-    #sched = BlockingScheduler()
+#    sched = BlockingScheduler()
 
-    #sched.add_job(mediciones, 'cron', day_of_week='mon-sun', hour='0-23', minute="0,15,30,45")
-    #sched.start()
+#    sched.add_job(mediciones, 'cron', day_of_week='mon-sun', hour='0-23', minute="0,15,30,45")
+#    sched.start()
     mediciones()
 
 
