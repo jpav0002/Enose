@@ -52,8 +52,7 @@ Taken from https://codepen.io/chriddyp/pen/bWLwgP.css
       width: 4.66666666667%;
  }
   .two.columns {
-      /*width: 13.3333333333%;*/
-	  width:50%;
+      width: 13.3333333333%;
  }
   .three.columns {
       width: 22%;
@@ -442,9 +441,7 @@ p {
   font-weight: 400;
   font-size: 14px;
   padding-left: 12px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  }
+}
 a {
   text-decoration: none;
 }
@@ -479,10 +476,9 @@ a {
   padding-top: 12px;
   padding-bottom: 12px;
 }
-.div-for-dates {
-  width: 50%;
-  text-align: left;
-  padding-left: 10px;
+.div-for-slider {
+  width: 97%;
+  text-align: center;
 }
 .logo {
   height: 50px;
@@ -635,8 +631,4 @@ a {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #d8d8d870 !important;
-}
-
-.div-for-checklist-sensor{
-	padding-bottom: 25px;
 }
