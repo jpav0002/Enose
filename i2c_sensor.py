@@ -7,6 +7,7 @@ import board
 import busio
 import digitalio
 from adafruit_mcp230xx.mcp23008 import MCP23008
+import adafruit_bme280
 
 def mcp23008(pin_num,direction,value,bus_num):
     
@@ -90,12 +91,22 @@ def ads1115_4ch(address_num,bus_num):
             values[i] = 6.144*adc.read_adc(i, gain=GAIN)/32765
         return values
 
+def get_bme280():
+    i2c= board.I2C()
+    bme= adafuit_bme280.Adafuit_BME280_I2C(i2c)
+    temp= bme280.temperature
+    hum= bme280.humidity
+    print("Temp= "+ temp)
+    print("Hum= "+hum)
+
 def main():
 
     values=ads1115_4ch(0x48,1)
     print(values)
     temp=sht31("both",1)
     print(temp)
+    get_bme280()
+
 
 
 if __name__ == "__main__":
