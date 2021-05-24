@@ -93,11 +93,10 @@ def ads1115_4ch(address_num,bus_num):
 
 def get_bme280():
     i2c= board.I2C()
-    bme= adafuit_bme280.Adafuit_BME280_I2C(i2c)
+    bme280= adafruit_bme280.Adafruit_BME280_I2C(i2c)
     temp= bme280.temperature
     hum= bme280.humidity
-    print("Temp= "+ temp)
-    print("Hum= "+hum)
+    return temp,hum
 
 def main():
 
@@ -105,9 +104,9 @@ def main():
     print(values)
     temp=sht31("both",1)
     print(temp)
-    get_bme280()
-
-
+    temp_ext,hum_ext=get_bme280()
+    print("Exterior temperature= "+str(temp_ext))
+    print("Exterior Humidity= "+str(hum_ext))
 
 if __name__ == "__main__":
     main()
