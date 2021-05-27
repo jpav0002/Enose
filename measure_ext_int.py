@@ -132,7 +132,7 @@ def mediciones():
                 print("Sample: " + str(muestras + 1) + " of " + str(num_muestras))
 
                 T_in.append(i2c_sensor.sht31("temp", 1))
-                H_out.append(i2c_sensor.sht31("hum", 1))
+                H_in.append(i2c_sensor.sht31("hum", 1))
                 temp,hum=i2c_sensor.get_bme280()
                 T_out.append(temp)
                 H_out.append(hum)
