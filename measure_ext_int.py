@@ -21,7 +21,7 @@ def create_csv(csv_data):
     now = datetime.now()
     date = now.strftime("%d%m%Y")
     hour = now.strftime("%H%M%S")
-    file_name = "mediciones_smartiago_v2" + str(date) + ".csv"
+    file_name = "mediciones_smartiago_v2_" + str(date) + ".csv"
     path = "/home/pi/repo/Enose/smartiago_v2/"
     pathfile = "/home/pi/repo/Enose/smartiago_v2/" + str(file_name)
 
@@ -78,8 +78,15 @@ def create_csv(csv_data):
 
 def update_mean(chain):
 
-    path = "/home/pi/repo/Enose/smartiago/Mean_Data.csv"
-    f = open(path, "a")
+    path = "/home/pi/repo/Enose/smartiago_v2/Mean_Data.csv"
+
+    if os.path.isfile(path):
+        f= open(path,"a")
+    else:
+        f=open(path,"w")
+        f.write("Date,Time,In_Temperature,In_Humidity,Out_Temperature,Out_Humidity,SP3S-AQ2-01,TGS832-A00,TGS822,SP-11-00,NA,SK25F,NA,SB-51-00,SP-19-01,SP-31-00,TGS2602-B00,TGS2620-C00")
+        f.write("\n")
+
     f.write(chain)
     f.write("\n")
     f.close()
