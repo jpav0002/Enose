@@ -21,21 +21,22 @@ def create_csv(csv_data):
     now = datetime.now()
     date = now.strftime("%d%m%Y")
     hour = now.strftime("%H%M%S")
-    file_name = "mediciones_smartiago_" + str(date) + ".csv"
-    path = "/home/pi/repo/Enose/smartiago/" + str(file_name)
+    file_name = "mediciones_smartiago_v2" + str(date) + ".csv"
+    path = "/home/pi/repo/Enose/smartiago_v2/"
+    pathfile = "/home/pi/repo/Enose/smartiago_v2/" + str(file_name)
 
     if os.path.isdir(path):
         pass
     else:
         os.mkdir(path)
 
-    if os.path.isfile(path):
+    if os.path.isfile(pathfile):
 
         f = open(path, "a")
 
     else:
 
-        f = open(path, "w")
+        f = open(pathfile, "w")
         date = now.strftime("%d/%m/%Y")
         f.write("Date,Time,In_Temperature,In_Humidity,Out_Temperature,Out_Humidity,SP3S-AQ2-01,TGS832-A00,TGS822,SP-11-00,NA,SK25F,NA,SB-51-00,SP-19-01,SP-31-00,TGS2602-B00,TGS2620-C00")
         f.write("\n")
@@ -90,14 +91,15 @@ def mediciones():
     now = datetime.now()
     muestras = 0
     csv_data = []
-    num_muestras = 30
-    temp_obj = 25
+    num_muestras = 5
+    temp_obj = 15
     wait_time = 15
+    heating = 10
 
     print("Starting Heating")
 
     i2c_sensor.mcp23008(0, "OUT", True, 0x23)
-    time.sleep(300)
+    time.sleep(heating)
 
     minute_start = now.minute
 
@@ -114,18 +116,23 @@ def mediciones():
             print("-----------------------------------------")
 
             while muestras < num_muestras:
-                T = []
-                H = []
+                T_in = []
+                H_in = []
+                T_out = []
+                H_out = []
 
                 print("Sample: " + str(muestras + 1) + " of " + str(num_muestras))
 
-                T.append(i2c_sensor.sht31("temp", 1))
-                H.append(i2c_sensor.sht31("hum", 1))
+                T_in.append(i2c_sensor.sht31("temp", 1))
+                H_out.append(i2c_sensor.sht31("hum", 1))
+                temp,hum=i2c_sensor.get_bme280()
+                T_out.append(temp)
+                H_out.append(hum)
                 adc0 = i2c_sensor.ads1115_4ch(0x48, 1)
                 adc1 = i2c_sensor.ads1115_4ch(0x49, 1)
                 adc2 = i2c_sensor.ads1115_4ch(0x4B, 1)
 
-                csv_data.append(T + H + adc0 + adc1 + adc2)
+                csv_data.append(T_in + H_in + T_out + H_out + adc0 + adc1 + adc2)
 
                 muestras += 1
 
@@ -144,11 +151,11 @@ def mediciones():
 
 def main():
     
-    sched = BlockingScheduler()
+#    sched = BlockingScheduler()
 
-    sched.add_job(mediciones, 'cron', day_of_week='mon-sun', hour='0-23', minute="0,20,40")
-    sched.start()
-#    mediciones()
+#    sched.add_job(mediciones, 'cron', day_of_week='mon-sun', hour='0-23', minute="0,20,40")
+#    sched.start()
+    mediciones()
 
 
 if __name__ == "__main__":
