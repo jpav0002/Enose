@@ -7,6 +7,8 @@ import os
 from apscheduler.schedulers.blocking import BlockingScheduler
 from datetime import datetime
 
+temperature=30
+
 
 def upload_data():
     now = datetime.now()
@@ -94,14 +96,19 @@ def update_mean(chain):
     return 0
 
 
-def mediciones():
+def mediciones(temperature):
     now = datetime.now()
     muestras = 0
     csv_data = []
-    num_muestras = 5
-    temp_obj = 15
+    num_muestras = 30
+    temp_obj = 30
     wait_time = 15
-    heating = 10
+    heating = 5
+
+    if (temperature>45):
+        temperature=25
+    else:
+        temperature+=5
 
     print("Starting Heating")
 
@@ -158,11 +165,11 @@ def mediciones():
 
 def main():
     
-#    sched = BlockingScheduler()
+    sched = BlockingScheduler()
 
-#    sched.add_job(mediciones, 'cron', day_of_week='mon-sun', hour='0-23', minute="0,20,40")
-#    sched.start()
-    mediciones()
+    sched.add_job(mediciones(temperature), 'cron', day_of_week='mon-sun', hour='0-23', minute="0,25,40")
+    sched.start()
+#    mediciones()
 
 
 if __name__ == "__main__":
