@@ -101,7 +101,7 @@ def mediciones():
     num_muestras = 30
     temp_obj = 30
     wait_time = 15
-    heating = 5
+    heating = 300
     temperature = 35
 
     print("Starting Heating")
