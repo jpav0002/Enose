@@ -8,10 +8,11 @@ from sklearn.neural_network import MLPRegressor
 from sklearn.tree import DecisionTreeRegressor
 
 X = pd.DataFrame()
-Sensor = pd.read_csv('/Users/jpav/Documents/Enose/WekaData_Enose/TGS2602.csv')
+#Sensor = pd.read_csv('/Users/jpav/Documents/Enose/WekaData_Enose/TGS2602.csv')
+Sensor = pd.read_csv('D:\\repo\\Enose\\smartiago_v2\\Mean_Data.csv')
 
 X=Sensor[["In_Temperature","In_Humidity"]]
-y = Sensor.iloc[:,-1:]
+y = Sensor[["SP-31-00"]]
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
@@ -24,14 +25,14 @@ est.fit(X_train, y_train.values.ravel())
 print(f"done in {time() - tic:.3f}s")
 print(f"Test R2 score: {est.score(X_test, y_test.values.ravel()):.4f}")
 
-print(f"Prediccion MLPRegressor:  {est.predict([[32.35818011,27.0748455]])}")
+print(f"Prediccion MLPRegressor:  {est.predict([[30.333714808880746,66.8264794893314]])}")
 
 print("Training DecisionTreeRegressor...")
 tic = time()
-regr_2 = DecisionTreeRegressor(max_depth=5)
+regr_2 = DecisionTreeRegressor(max_depth=10)
 regr_2.fit(X, y)
 
 print(f"done in {time() - tic:.3f}s")
 print(f"Test R2 score: {regr_2.score(X_test, y_test.values.ravel()):.4f}")
 
-print(f"Prediccion DecisionTreeRegressor:  {regr_2.predict([[32.35818011,27.0748455]])}")
+print(f"Prediccion DecisionTreeRegressor:  {regr_2.predict([[30.333714808880746,66.8264794893314]])}")
