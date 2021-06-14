@@ -16,11 +16,11 @@ repo.pull()
 
 app = dash.Dash()
 
-df = pd.read_csv('../smartiago/Mean_Data.csv')
+df = pd.read_csv('../smartiago_v2/Mean_Data.csv')
 
 for col in df.columns:
     if (col != "Date") and (col != "Time") and (col != "NA") and (col != "NA.1"):
-        if (col == "Temperature") or (col == "Humidity"):
+        if ("Temperature" in col ) or ("Humidity" in col):
             tyh.append(col)
         else:
             header.append(col)
