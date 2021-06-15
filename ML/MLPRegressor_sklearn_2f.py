@@ -8,8 +8,8 @@ from sklearn.neural_network import MLPRegressor
 from sklearn.tree import DecisionTreeRegressor
 
 X = pd.DataFrame()
-#Sensor = pd.read_csv('/Users/jpav/Documents/Enose/WekaData_Enose/TGS2602.csv')
-Sensor = pd.read_csv('D:\\repo\\Enose\\smartiago_v2\\Mean_Data.csv')
+Sensor = pd.read_csv('/Users/jpav/Documents/Enose/smartiago_v2/Mean_Data.csv')
+#Sensor = pd.read_csv('D:\\repo\\Enose\\smartiago_v2\\Mean_Data.csv')
 
 X=Sensor[["In_Temperature","In_Humidity"]]
 y = Sensor[["SP-31-00"]]

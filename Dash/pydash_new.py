@@ -2,6 +2,7 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
+import dataConverter
 import plotly.graph_objs as go
 import git
 import dash_functions
@@ -14,9 +15,12 @@ tyh = []
 repo = git.cmd.Git('../')
 repo.pull()
 
+#dataConverter.preprocess()
+
 app = dash.Dash()
 
-df = pd.read_csv('../smartiago_v2/Mean_Data.csv')
+df = pd.read_csv('./Data_processed/processed.csv')
+#df = pd.read_csv('../smartiago/Mean_Data.csv')
 
 for col in df.columns:
     if (col != "Date") and (col != "Time") and (col != "NA") and (col != "NA.1"):
@@ -232,7 +236,7 @@ def update_graphs(env_var, sensor_var, start, end):
         ],
         'layout': go.Layout(
             xaxis={'title': 'Date', 'gridcolor': 'gray'},
-            yaxis={'title': 'Sensor Response', 'gridcolor': 'gray'},
+            yaxis={'title': 'Sensor Response', 'gridcolor': 'gray', 'range':[0,5]},
             margin={'l': 40, 'b': 40, 't': 10, 'r': 10},
             legend={'x': 1, 'y': 1},
             hovermode='closest',
