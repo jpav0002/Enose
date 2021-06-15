@@ -99,7 +99,7 @@ def mediciones():
     muestras = 0
     csv_data = []
     num_muestras = 30
-    temp_obj = 30
+    temp_obj = 45
     wait_time = 15
     heating = 300
     temperature = 35
