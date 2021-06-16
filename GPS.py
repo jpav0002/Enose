@@ -1,6 +1,6 @@
 import serial 
 
-port = "/dev/ttyAMA0"
+port = "/dev/serial0"
 
 def parse(data):
     if data[0:6] == "$GPGGA":
