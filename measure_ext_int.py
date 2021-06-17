@@ -10,6 +10,7 @@ from datetime import datetime
 
 def getLocation():
 
+    os.system('sudo chmod +666 /dev/serial0')
     lat,dirLat,lon,dirLon = GPS.readGPS()
     print("Latitude: %s(%s) -- Longitude %s(%s)" %(lat, dirLat, lon, dirLon))
 
