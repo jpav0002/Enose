@@ -1,7 +1,5 @@
 import serial 
 
-port = "/dev/serial0"
-
 def parse(data):
     if data[0:6] == "$GPGGA":
         s = data.split(",")
@@ -20,8 +18,7 @@ def parse(data):
         alt = s[9] + " m"
         sat = s[7]
         
-        print "Latitude: %s(%s) -- Longitude %s(%s)" %(lat, dirLat, lon, dirLon)
- 
+        return [lat,dirLat,lon,dirLon]
  
 def decode(coord):
     v = coord.split(".")
@@ -34,8 +31,24 @@ def decode(coord):
     
     return deg + min + "." + tail
 
+def readGPS():
 
-ser = serial.Serial(port, baudrate=9600, timeout=0.5)
-while True:
-    data = ser.readline()
-    parse(data)
+    port = "/dev/serial0"
+    lat=0
+    lon=0
+    dirLar=0
+    dirLon=0
+    ser = serial.Serial(port, baudrate=9600, timeout=0.5)
+    while True:
+        data = ser.readline()
+        if ("$GPGGA" in data):
+            lat,dirLat,lon,dirLon = parse(data)
+        break
+    return [lat,dirLat,lon,dirLon]
+
+def main():
+    lat,dirLat,lon,dirLon=readGPS()
+    print "Latitude: %s(%s) -- Longitude %s(%s)" %(lat, dirLat, lon, dirLon)
+
+if __name__ == "__main__":
+    main()

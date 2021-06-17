@@ -4,9 +4,14 @@ import time
 import i2c_sensor
 import subprocess
 import os
+import GPS
 from apscheduler.schedulers.blocking import BlockingScheduler
 from datetime import datetime
 
+def getLocation():
+
+    lat,Plat,lon,Plon = GPS.readGPS()
+    print()
 
 def upload_data():
     now = datetime.now()
