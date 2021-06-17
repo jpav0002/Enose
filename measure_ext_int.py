@@ -11,7 +11,7 @@ from datetime import datetime
 def upload_data():
     now = datetime.now()
     dt_string = now.strftime("%d%m%Y_%H%M%S")
-    process = subprocess.Popen('/home/pi/repo/Enose/gitpush.sh %s' % (str(dt_string),), shell=True)
+    process = subprocess.Popen('/home/pi/Enose/gitpush.sh %s' % (str(dt_string),), shell=True)
     process.wait()
     return 0
 
@@ -22,8 +22,8 @@ def create_csv(csv_data):
     date = now.strftime("%d%m%Y")
     hour = now.strftime("%H%M%S")
     file_name = "mediciones_smartiago_v2_" + str(date) + ".csv"
-    path = "/home/pi/repo/Enose/smartiago_v2/"
-    pathfile = "/home/pi/repo/Enose/smartiago_v2/" + str(file_name)
+    path = "/home/pi/Enose/smartiago_v2/"
+    pathfile = "/home/pi/Enose/smartiago_v2/" + str(file_name)
 
     if os.path.isdir(path):
         pass
@@ -78,7 +78,7 @@ def create_csv(csv_data):
 
 def update_mean(chain):
 
-    path = "/home/pi/repo/Enose/smartiago_v2/Mean_Data.csv"
+    path = "/home/pi/Enose/smartiago_v2/Mean_Data.csv"
 
     if os.path.isfile(path):
         f= open(path,"a")

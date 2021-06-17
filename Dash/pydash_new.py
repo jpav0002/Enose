@@ -24,7 +24,7 @@ app = dash.Dash()
 df = pd.read_csv('../smartiago/Mean_Data.csv')
 
 for col in df.columns:
-    if (col != "Date") and (col != "Time") and (col != "NA") and (col != "NA.1"):
+    if (col != "Date") and (col != "Time") and (col != "NA") and (col != "NA.1") and ("Unnamed" not in col):
         if ("Temperature" in col) or ("Humidity" in  col):
             tyh.append(col)
         else:
@@ -237,7 +237,7 @@ def update_graphs(env_var, sensor_var, start, end):
         ],
         'layout': go.Layout(
             xaxis={'title': 'Date', 'gridcolor': 'gray'},
-            yaxis={'title': 'Sensor Response', 'gridcolor': 'gray', 'range':[0,5]},
+            yaxis={'title': 'Sensor Response', 'gridcolor': 'gray', 'range':[0,6]},
             margin={'l': 40, 'b': 40, 't': 10, 'r': 10},
             legend={'x': 1, 'y': 1},
             hovermode='closest',
