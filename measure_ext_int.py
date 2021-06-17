@@ -11,7 +11,23 @@ from datetime import datetime
 def getLocation():
 
     lat,dirLat,lon,dirLon = GPS.readGPS()
-    print("Latitude: %s(%s) -- Longitude %s(%s)" %(lat, dirLat, lon, dirLon)
+    print("Latitude: %s(%s) -- Longitude %s(%s)" %(lat, dirLat, lon, dirLon))
+
+    if os.path.isfile('home/pi/Enose/smartiago_v2/localizationData.csv'):
+
+        f = open(pathfile, "a")
+
+    else:
+
+        f = open(pathfile, "w")
+        f.write("Date,Hour,Lat,dirLat,Lon,dirLon")
+        f.write("\n")
+        f.close()
+
+
+    chain = now.strftime("%d/%m/%Y,%H:%M:%S") + "," +lat+ "," +dirLat+ "," +lon+ "," +dirLon
+    f.write(chain)
+    f.write("\n")
 
 def upload_data():
     now = datetime.now()
