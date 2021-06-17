@@ -4,7 +4,7 @@ import time
 import i2c_sensor
 import subprocess
 import os
-import GPS
+#import GPS
 from apscheduler.schedulers.blocking import BlockingScheduler
 from datetime import datetime
 
@@ -122,8 +122,8 @@ def mediciones():
     csv_data = []
     num_muestras = 30
     temp_obj = 45
-    wait_time = 15
-    heating = 300
+    wait_time = 0
+    heating = 1
     temperature = 35
 
     print("Starting Heating")
@@ -185,7 +185,7 @@ def main():
 
     sched.add_job(mediciones, 'cron', day_of_week='mon-sun', hour='0-23', minute="0,20,40")
     sched.start()
-#    mediciones()
+    #mediciones()
 
 
 if __name__ == "__main__":

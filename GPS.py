@@ -1,16 +1,16 @@
-import serial 
+from serial import Serial
 
 def readGPS():
    
     port = "/dev/serial0"
-    ser = serial.Serial(port, baudrate=9600, timeout=0.5)
+    ser = Serial(port, baudrate=9600, timeout=0.5)
     while True:
         data=ser.readline()
         if ("GPGGA" in data):
 
             s = data.split(",")
             if s[7] == '0':
-                print "No satellite data available"
+                print ("No satellite data available")
                 return
         
             time = s[1][0:2] + ":" + s[1][2:4] + ":" + s[1][4:6]
@@ -24,7 +24,7 @@ def readGPS():
             alt = s[9] + " m"
             sat = s[7]
         
-            print "latitude: %s(%s) -- longitude %s(%s)" %(lat, dirLat, lon, dirLon)
+            print ("latitude: %s(%s) -- longitude %s(%s)" %(lat, dirLat, lon, dirLon))
             break
     return [lat,dirLat,lon,dirLon]
  
@@ -41,7 +41,7 @@ def decode(coord):
 
 def main():
     lat,dirLat,lon,dirLon=readGPS()
-    print "Latitude: %s(%s) -- Longitude %s(%s)" %(lat, dirLat, lon, dirLon)
+    print ("Latitude: %s(%s) -- Longitude %s(%s)" %(lat, dirLat, lon, dirLon))
 
 if __name__ == "__main__":
     main()
