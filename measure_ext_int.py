@@ -10,8 +10,8 @@ from datetime import datetime
 
 def getLocation():
 
-    lat,Plat,lon,Plon = GPS.readGPS()
-    print()
+    lat,dirLat,lon,dirLon = GPS.readGPS()
+    print("Latitude: %s(%s) -- Longitude %s(%s)" %(lat, dirLat, lon, dirLon)
 
 def upload_data():
     now = datetime.now()
