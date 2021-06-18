@@ -25,12 +25,12 @@ def getLocation():
         f = open(pathfile, "w")
         f.write("Date,Hour,Lat,dirLat,Lon,dirLon")
         f.write("\n")
-        f.close()
 
     
     chain = now.strftime("%d/%m/%Y,%H:%M:%S") + "," +lat+ "," +dirLat+ "," +lon+ "," +dirLon
     f.write(chain)
     f.write("\n")
+    f.close()
 
 def upload_data():
     now = datetime.now()
@@ -122,7 +122,7 @@ def mediciones():
     now = datetime.now()
     muestras = 0
     csv_data = []
-    num_muestras = 5
+    num_muestras = 10
     temp_obj = 45
     wait_time = 0
     heating = 1
