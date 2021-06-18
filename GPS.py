@@ -6,6 +6,7 @@ def readGPS():
     ser = Serial(port, baudrate=9600, timeout=0.5)
     while True:
         data=ser.readline()
+        data=data.decode()
         if ("GPGGA" in data):
 
             s = data.split(",")
@@ -23,9 +24,8 @@ def readGPS():
         
             alt = s[9] + " m"
             sat = s[7]
-        
-            print ("latitude: %s(%s) -- longitude %s(%s)" %(lat, dirLat, lon, dirLon))
             break
+
     return [lat,dirLat,lon,dirLon]
  
 def decode(coord):

@@ -4,17 +4,19 @@ import time
 import i2c_sensor
 import subprocess
 import os
-#import GPS
+import GPS
 from apscheduler.schedulers.blocking import BlockingScheduler
 from datetime import datetime
 
 def getLocation():
 
+    now = datetime.now()
     os.system('sudo chmod +666 /dev/serial0')
+    pathfile="/home/pi/Enose/smartiago_v2/localizationData.csv"
     lat,dirLat,lon,dirLon = GPS.readGPS()
     print("Latitude: %s(%s) -- Longitude %s(%s)" %(lat, dirLat, lon, dirLon))
 
-    if os.path.isfile('home/pi/Enose/smartiago_v2/localizationData.csv'):
+    if os.path.isfile(pathfile):
 
         f = open(pathfile, "a")
 
@@ -25,7 +27,7 @@ def getLocation():
         f.write("\n")
         f.close()
 
-
+    
     chain = now.strftime("%d/%m/%Y,%H:%M:%S") + "," +lat+ "," +dirLat+ "," +lon+ "," +dirLon
     f.write(chain)
     f.write("\n")
@@ -120,7 +122,7 @@ def mediciones():
     now = datetime.now()
     muestras = 0
     csv_data = []
-    num_muestras = 30
+    num_muestras = 5
     temp_obj = 45
     wait_time = 0
     heating = 1
@@ -169,6 +171,7 @@ def mediciones():
             i2c_sensor.mcp23008(0, "OUT", False, 0x23)
             avr_list = create_csv(csv_data)
             update_mean(avr_list)
+            getLocation()
             upload_data()
             print("Data recollection ended successfully")
             break
@@ -181,11 +184,11 @@ def mediciones():
 
 def main():
     
-    sched = BlockingScheduler()
+    #sched = BlockingScheduler()
 
-    sched.add_job(mediciones, 'cron', day_of_week='mon-sun', hour='0-23', minute="0,20,40")
-    sched.start()
-    #mediciones()
+    #sched.add_job(mediciones, 'cron', day_of_week='mon-sun', hour='0-23', minute="0,20,40")
+    #sched.start()
+    mediciones()
 
 
 if __name__ == "__main__":
