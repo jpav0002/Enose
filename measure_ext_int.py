@@ -122,10 +122,10 @@ def mediciones():
     now = datetime.now()
     muestras = 0
     csv_data = []
-    num_muestras = 10
+    num_muestras = 15
     temp_obj = 45
-    wait_time = 0
-    heating = 1
+    wait_time = 15
+    heating = 300
     temperature = 35
 
     print("Starting Heating")
@@ -184,11 +184,11 @@ def mediciones():
 
 def main():
     
-    #sched = BlockingScheduler()
+    sched = BlockingScheduler()
 
-    #sched.add_job(mediciones, 'cron', day_of_week='mon-sun', hour='0-23', minute="0,20,40")
-    #sched.start()
-    mediciones()
+    sched.add_job(mediciones, 'cron', day_of_week='mon-sun', hour='0-23', minute="0,20,40")
+    sched.start()
+    #mediciones()
 
 
 if __name__ == "__main__":
