@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -18,14 +20,24 @@ repo.pull()
 
 #mngCSV = dataConverter.manageCSV_data()
 
-processedFile='./Data_processed/processed_classifier.csv'
-sensorFile='../smartiago/Mean_data.csv'
+processedFile = './Data_processed/processed_classifier.csv'
+sensorFile = '../smartiago/Mean_data.csv'
+locFile = '../smartiago_v2/localizationData.csv'
 
 app = dash.Dash()
 df = pd.read_csv(processedFile)
+gps_df = pd.read_csv(locFile)
+
+latitude,longitude = dash_functions.get_location(gps_df.iloc[-1])
+
+print(str(latitude)+" "+str(longitude))
+
+mapbox_access_token = open(".mapbox_token").read()
 
 for col in df.columns:
-    if ("Date" not in col) and ("Time" not in col) and (col != "NA") and (col != "NA.1") and ("Unnamed" not in col) and ("Intensity" not in col):
+    if (("Date" not in col) and ("Time" not in col) and (col != "NA") and (col != "NA.1")
+
+                and ("Unnamed" not in col) and ("Intensity" not in col) and ("TGS2602" not in col)):
 
         if ("Temperature" in col) or ("Humidity" in  col):
             tyh.append(col)
@@ -136,7 +148,7 @@ app.layout = html.Div(children=[
                                           margin={'l': 40, 'b': 40, 't': 10, 'r': 10},
                                           legend={'x': 1, 'y': 1},
                                           hovermode='closest',
-                                          height=350,
+                                          height=250,
                                           width=920,
                                           template='plotly_dark',
                                           plot_bgcolor='rgba(0,0,0,0)',
@@ -167,7 +179,7 @@ app.layout = html.Div(children=[
                                           margin={'l': 40, 'b': 40, 't': 10, 'r': 10},
                                           legend={'x': 1, 'y': 1},
                                           hovermode='closest',
-                                          height=350,
+                                          height=250,
                                           width=920,
                                           template='plotly_dark',
                                           plot_bgcolor='rgba(0,0,0,0)',
@@ -175,6 +187,41 @@ app.layout = html.Div(children=[
                                       )
                                   }
                               ),
+                              dcc.Graph(
+                                id='Localization',
+                                figure={
+                                    'data':[
+                                        go.Scattermapbox(
+                                            lat=[str(latitude)],
+                                            lon=[str(longitude)],
+                                            mode='markers',
+                                            marker=go.scattermapbox.Marker(size=14),
+                                            text=['Container Position'],
+                                        ),
+                                    ],
+                                    'layout': go.Layout(
+                                        yaxis={'title': 'Container Location', 'gridcolor': 'gray'},
+                                        hovermode='closest',
+                                        margin={'l': 40, 'b': 40, 't': 30, 'r': 10},
+                                        mapbox={
+                                            'accesstoken': mapbox_access_token,
+                                            'bearing': 0,
+                                            'center': go.layout.mapbox.Center(
+                                                lat=latitude,
+                                                lon=longitude,
+                                            ),
+                                            'pitch': 0,
+                                            'zoom': 13,
+                                        },
+                                        title='Container Location',
+                                        height=200,
+                                        width=920,
+                                        template='plotly_dark',
+                                        plot_bgcolor='rgba(0,0,0,0)',
+                                        paper_bgcolor='rgba(0,0,0,0)',
+                                    )
+                                }
+                            ),
                           ])  # Define the right element
              ])
 ])
@@ -226,7 +273,7 @@ def update_graphs(env_var, sensor_var, start, end):
             margin={'l': 40, 'b': 40, 't': 10, 'r': 10},
             legend={'x': 1, 'y': 1},
             hovermode='closest',
-            height=350,
+            height=250,
             width=920,
             template='plotly_dark',
             plot_bgcolor='rgba(0,0,0,0)',
@@ -255,7 +302,7 @@ def update_graphs(env_var, sensor_var, start, end):
             margin={'l': 40, 'b': 40, 't': 10, 'r': 10},
             legend={'x': 1, 'y': 1},
             hovermode='closest',
-            height=350,
+            height=250,
             width=920,
             template='plotly_dark',
             plot_bgcolor='rgba(0,0,0,0)',
