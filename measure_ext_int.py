@@ -171,7 +171,7 @@ def mediciones():
             i2c_sensor.mcp23008(0, "OUT", False, 0x23)
             avr_list = create_csv(csv_data)
             update_mean(avr_list)
-            getLocation()
+            #getLocation()
             upload_data()
             print("Data recollection ended successfully")
             break
@@ -186,7 +186,7 @@ def main():
     
     sched = BlockingScheduler()
 
-    sched.add_job(mediciones, 'cron', day_of_week='mon-sun', hour='0-23', minute="0,15,30,45")
+    sched.add_job(mediciones, 'cron', day_of_week='mon-sun', hour='0-23', minute="0,20,40")
     sched.start()
     #mediciones()
 
