@@ -22,7 +22,7 @@ class odor_classifier:
             if (('Date' not in col) and ('Time' not in col) and ('Intensity' not in col)
 
                         and ('Humidity' not in col) and ('Temperature' not in col) and ("TGS2602" not in col)):
-                        
+
                 X.append(col)
 
         X=data[X]
@@ -52,9 +52,9 @@ class odor_classifier:
 
 def main():
 
-    data='./Data_processed/Models/classifier_data.csv'
+    data='/Users/jpav/Documents/Enose/Dash/Data_processed/Models/classifier_v1.csv'
     classifier=odor_classifier(data)
-    vec=[0.20075588,2.348446257,0.094558657,0.308384483,0.165865185,1.172351082]
+    vec=[0,0,0,0,0,0]
     classifier.predict_value(vec)
 
     return 0

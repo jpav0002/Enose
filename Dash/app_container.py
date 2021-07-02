@@ -18,10 +18,10 @@ tyh = []
 repo = git.cmd.Git('../')
 repo.pull()
 
-#mngCSV = dataConverter.manageCSV_data()
-
-processedFile = './Data_processed/processed_classifier.csv'
-sensorFile = '../smartiago/Mean_data.csv'
+mngCSV = dataConverter.manageCSV_data()
+processedFile = '../Dash/Data_processed/processed_classifier_smartiago_v2.csv'
+sensorFile = '../smartiago_v2/Mean_data.csv'
+mngCSV.checkNewVal(processedFile,sensorFile)
 locFile = '../smartiago_v2/localizationData.csv'
 
 app = dash.Dash()
@@ -44,7 +44,7 @@ for col in df.columns:
         else:
             header.append(col)
 
-df['DateTime'] = pd.to_datetime(df['Date'] + ' ' + df['Time'], format='%d/%m/%Y %H:%M:%S')
+df['DateTime'] = pd.to_datetime(df['Date'] + ' ' + df['Time'], format='%d/%m/%y %H:%M:%S')
 
 app.layout = html.Div(children=[
     html.Div(className='row',  # Define the row element
@@ -269,7 +269,7 @@ def update_graphs(env_var, sensor_var, start, end):
         ],
         'layout': go.Layout(
             xaxis={'title': 'Date', 'gridcolor': 'gray'},
-            yaxis={'title': 'Sensor Response', 'gridcolor': 'gray'},
+            yaxis={'title': 'Temperature and Humidity', 'gridcolor': 'gray'},
             margin={'l': 40, 'b': 40, 't': 10, 'r': 10},
             legend={'x': 1, 'y': 1},
             hovermode='closest',
