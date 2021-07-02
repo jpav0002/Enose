@@ -186,7 +186,7 @@ def main():
     
     sched = BlockingScheduler()
 
-    sched.add_job(mediciones, 'cron', day_of_week='mon-sun', hour='0-23', minute="0,20,40")
+    sched.add_job(mediciones, 'cron', day_of_week='mon-sun', hour='0-23', minute="0,15,30,45")
     sched.start()
     #mediciones()
 
